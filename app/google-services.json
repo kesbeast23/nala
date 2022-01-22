@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1017139488943",
+    "project_id": "nala-6924e",
+    "storage_bucket": "nala-6924e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017139488943:android:806b48a70acd1ad4be0c5a",
+        "android_client_info": {
+          "package_name": "com.kesego.nala"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017139488943-4hbq48g7luj43u4npgo6rb2r2f3k4te5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRNMi23Hoc2aHKnhpS6tOohDsxhxc8ncs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017139488943-4hbq48g7luj43u4npgo6rb2r2f3k4te5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
