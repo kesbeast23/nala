@@ -9,14 +9,21 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.21770833333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.10520833333333333" />
         <entry key="app/src/main/res/layout/activity_main2.xml" value="0.22760416666666666" />
+        <entry key="app/src/main/res/layout/activity_post.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_logged_in.xml" value="0.11979166666666667" />
         <entry key="app/src/main/res/layout/fragment_loggedin.xml" value="0.11979166666666667" />
         <entry key="app/src/main/res/layout/fragment_login_register.xml" value="0.18072916666666666" />
+        <entry key="app/src/main/res/layout/fragment_notification.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.38958333333333334" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.38958333333333334" />
         <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_sign_out.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_sign_up.xml" value="0.31005732152162585" />
+        <entry key="app/src/main/res/layout/menu.xml" value="0.19375" />
+        <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.4036458333333333" />
       </map>
     </option>
   </component>
