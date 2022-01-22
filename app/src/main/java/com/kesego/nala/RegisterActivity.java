@@ -69,12 +69,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }else if(str_password.length()<6){
                     Toast.makeText(RegisterActivity.this,"Password must have 6 character!",Toast.LENGTH_SHORT).show();
                 }else{
-
+                    register(str_username,str_fullname,str_email,str_password);
                 }
             }
         });
     }
-    public void register(String username,String email,String password){
+    public void register(String username,String fullname,String email,String password){
         auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,13 +88,20 @@ public class RegisterActivity extends AppCompatActivity {
                     hashMap.put("username",username.toLowerCase());
                     hashMap.put("fullname",fullname);
                     hashMap.put("bio","");
-                    hashMap.put("imageurl","");
+                    hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/nala-6924e.appspot.com/o/00B4R41FLE%20(1).jpeg?alt=media&token=6abc4f6b-4bd0-42e5-88f1-f52d0fe40e2c");
                     reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
+                            if(task.isSuccessful()){
+                                pd.dismiss();
+                                Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
                         }
                     });
+                }else{
+                    Toast.makeText(RegisterActivity.this,"You are not registered with this email and password!",Toast.LENGTH_SHORT).show();
                 }
             }
         });
