@@ -1,8 +1,10 @@
 package com.kesego.nala;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +13,13 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.kesego.nala.Model.Post;
@@ -55,6 +63,7 @@ public class EditPostActivity extends AppCompatActivity {
         postE = intent.getStringExtra("postE");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        storageRef = FirebaseStorage.getInstance().getReference("posts");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postE);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -92,6 +101,7 @@ public class EditPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 updatePost(description.getText().toString());
+                finish();
             }
 
 
@@ -110,5 +120,62 @@ public class EditPostActivity extends AppCompatActivity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
+    private void uploadImage(){
+        ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("uploading");
+        pd.show();
+        if (mImageUri != null){
+            StorageReference filereference = storageRef.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
 
+            uploadtask = filereference.putFile(mImageUri);
+            uploadtask.continueWithTask(new Continuation() {
+                @Override
+                public Object then(@NonNull Task task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return filereference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task <Uri>task) {
+                    if (task.isSuccessful()){
+                        Uri downloadUri = task.getResult();
+                        String myUrl = downloadUri.toString();
+
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postE);
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("postimage",""+myUrl);
+                        reference.updateChildren(hashMap);
+                        pd.dismiss();
+                    }else{
+                        Toast.makeText(EditPostActivity.this,"Failed",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditPostActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {
+            Toast.makeText(this,"No image selected",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            mImageUri = result.getUri();
+
+
+            image_added.setImageURI(mImageUri);
+            uploadImage();
+
+        }else{
+            Toast.makeText(this,"Something is wrong!",Toast.LENGTH_SHORT).show();
+        }
+    }
 }
