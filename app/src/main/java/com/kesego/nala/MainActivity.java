@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kesego.nala.fragments.HomeFragment;
 import com.kesego.nala.fragments.NotificationFragment;
-import com.kesego.nala.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -33,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.nav_home:
                     selectFragment = new HomeFragment();
-                    break;
-                case R.id.nav_search:
-                    selectFragment = new SearchFragment();
                     break;
                 case R.id.nav_add:
                     selectFragment=null;

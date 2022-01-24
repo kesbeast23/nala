@@ -20,13 +20,23 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content">
                <ImageView
-                   android:layout_width="100dp"
+                   android:layout_width="50dp"
                    android:layout_height="35dp"
                    android:layout_alignParentStart="true"
-                   android:layout_marginLeft="20dp"
+                   android:id="@+id/logo1"
                    android:src="@drawable/logo"/>
+
+               <EditText
+                   android:id="@+id/search_bar"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:layout_marginLeft="10dp"
+                   android:layout_toEndOf="@+id/logo1"
+                   android:background="@android:color/transparent"
+                   android:hint="Search..." />
                <ImageView
-                   android:layout_width="80dp"
+                   android:layout_width="40dp"
                    android:layout_height="40dp"
                    android:layout_alignParentEnd="true"
                    android:layout_marginRight="5dp"

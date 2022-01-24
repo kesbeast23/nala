@@ -39,7 +39,7 @@ import java.util.HashMap;
 public class EditPostActivity extends AppCompatActivity {
 
     ImageView close,image_added;
-    MaterialEditText description;
+    MaterialEditText description,title;
     TextView save,tv_change;
     FirebaseUser firebaseUser;
     private Uri mImageUri;
@@ -57,6 +57,7 @@ public class EditPostActivity extends AppCompatActivity {
         close = findViewById(R.id.close);
         image_added = findViewById(R.id.image_added);
         description = findViewById(R.id.description);
+        title = findViewById(R.id.title);
         save = findViewById(R.id.save);
         tv_change = findViewById(R.id.tv_change);
         Intent intent = getIntent();
@@ -70,6 +71,7 @@ public class EditPostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Post post= snapshot.getValue(Post.class);
+                title.setText(post.getTitle());
                 description.setText(post.getDescription());
                 Glide.with(getApplicationContext()).load(post.getPostimage()).into(image_added);
             }
@@ -100,7 +102,7 @@ public class EditPostActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePost(description.getText().toString());
+                updatePost(title.getText().toString(),description.getText().toString());
                 finish();
             }
 
@@ -108,10 +110,10 @@ public class EditPostActivity extends AppCompatActivity {
         });
 
     }
-    private void updatePost(String description) {
+    private void updatePost(String title,String description) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts").child(postE);
         HashMap<String,Object> hashMap = new HashMap<>();
-
+        hashMap.put("title",title);
         hashMap.put("description",description);
         reference.updateChildren(hashMap);
     }
