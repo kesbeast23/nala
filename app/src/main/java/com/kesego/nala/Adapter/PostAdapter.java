@@ -1,6 +1,7 @@
 package com.kesego.nala.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.kesego.nala.MainActivity;
 import com.kesego.nala.Model.Post;
 import com.kesego.nala.Model.User;
 import com.kesego.nala.R;
+import com.kesego.nala.RegisterActivity;
 
 import java.util.List;
 
@@ -72,6 +75,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
 
+
+
     }
 
     @Override
@@ -96,6 +101,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             likes = itemView.findViewById(R.id.likes);
             description = itemView.findViewById(R.id.description);
             publisher = itemView.findViewById(R.id.publisher1);
+
         }
     }
     private  void isLiked(String postid,ImageView imageView){

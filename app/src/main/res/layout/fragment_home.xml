@@ -25,6 +25,14 @@
                    android:layout_alignParentStart="true"
                    android:layout_marginLeft="20dp"
                    android:src="@drawable/logo"/>
+               <ImageView
+                   android:layout_width="80dp"
+                   android:layout_height="40dp"
+                   android:layout_alignParentEnd="true"
+                   android:layout_marginRight="5dp"
+                   android:src="@drawable/ic_logout"
+                   android:id="@+id/logout"
+                   />
            </RelativeLayout>
        </androidx.appcompat.widget.Toolbar>
 

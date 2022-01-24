@@ -1,5 +1,6 @@
 package com.kesego.nala.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,15 +21,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kesego.nala.Adapter.PostAdapter;
+import com.kesego.nala.MainActivity;
 import com.kesego.nala.Model.Post;
 import com.kesego.nala.Model.User;
 import com.kesego.nala.R;
+import com.kesego.nala.RegisterActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
+    private ImageView logout;
     private PostAdapter postAdapter;
     private List<Post> postList;
     private String userid;
@@ -40,6 +45,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerview);
+        logout = view.findViewById(R.id.logout);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);
@@ -50,6 +56,16 @@ public class HomeFragment extends Fragment {
         postAdapter = new PostAdapter(getContext(),postList);
         recyclerView.setAdapter(postAdapter);
         readPosts();
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), RegisterActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         return  view;
 
