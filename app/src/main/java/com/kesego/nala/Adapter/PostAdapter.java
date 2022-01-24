@@ -74,6 +74,16 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!holder.like.getTag().equals("like")){
+                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostid()).child(firebaseUser.getUid()).removeValue();
+                }
+                FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostid()).removeValue();
+            }
+        });
+
 
 
 
