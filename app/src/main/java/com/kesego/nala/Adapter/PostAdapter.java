@@ -19,12 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.kesego.nala.EditPostActivity;
 import com.kesego.nala.MainActivity;
 import com.kesego.nala.Model.Post;
 import com.kesego.nala.Model.User;
 import com.kesego.nala.R;
 import com.kesego.nala.RegisterActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -83,6 +85,14 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostid()).removeValue();
             }
         });
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), EditPostActivity.class);
+                intent.putExtra("postE",  post.getPostid());
+                v.getContext().startActivity(intent);
+            }
+        });
 
 
 
@@ -96,7 +106,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public  class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView image_profile,post_image,like,share,delete;
+        public ImageView image_profile,post_image,like,share,delete,edit;
         public TextView username,likes,description,publisher;
 
         public ViewHolder(@NonNull View itemView) {
@@ -111,6 +121,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             likes = itemView.findViewById(R.id.likes);
             description = itemView.findViewById(R.id.description);
             publisher = itemView.findViewById(R.id.publisher1);
+            edit = itemView.findViewById(R.id.openp);
 
         }
     }
