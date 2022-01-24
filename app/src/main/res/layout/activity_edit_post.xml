@@ -80,6 +80,14 @@
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:hint="Title"
+            android:layout_marginTop="20dp"
+            app:met_floatingLabel="normal"
+            />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/description"
             android:hint="Description"
             android:layout_marginTop="20dp"

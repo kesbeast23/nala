@@ -42,7 +42,7 @@ public class PostActivity extends AppCompatActivity {
     String imageUrl;
     StorageTask uploadTask;
     StorageReference storageReference;
-    EditText description;
+    EditText description,title;
     ImageView close,image_added;
     static final int CAMERA_REQUEST_CODE = 101;
     private static final  int GALLERY_REQUEST =1;
@@ -56,6 +56,7 @@ public class PostActivity extends AppCompatActivity {
 
         close = findViewById(R.id.close);
         description = findViewById(R.id.description);
+        title = findViewById(R.id.title);
         image_added = findViewById(R.id.image_added);
         post = findViewById(R.id.post);
 
@@ -122,6 +123,7 @@ public class PostActivity extends AppCompatActivity {
                         hashMap.put("postimage",imageUrl);
                         hashMap.put("description",description.getText().toString());
                         hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        hashMap.put("title",title.getText().toString());
 
                         reference.child(postid).setValue(hashMap);
                         progressDialog.dismiss();

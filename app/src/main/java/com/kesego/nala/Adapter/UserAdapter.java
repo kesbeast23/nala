@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kesego.nala.Model.User;
 import com.kesego.nala.R;
-import com.kesego.nala.fragments.ProfileFragment;
+import com.kesego.nala.fragments.NotificationFragment;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 editor.putString("profileid",user.getId());
                 editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ProfileFragment()).commit();
+                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new NotificationFragment()).commit();
             }
         });
 

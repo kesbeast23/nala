@@ -2,13 +2,20 @@ package com.kesego.nala.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,16 +30,22 @@ import com.kesego.nala.EditPostActivity;
 import com.kesego.nala.MainActivity;
 import com.kesego.nala.Model.Post;
 import com.kesego.nala.Model.User;
+import com.kesego.nala.PostActivity;
 import com.kesego.nala.R;
 import com.kesego.nala.RegisterActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Post> mPost;
+    Bitmap image;
 
     FirebaseUser firebaseUser;
 
@@ -62,7 +75,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.description.setText(post.getDescription());
         }
 
-        publisherInfo(holder.image_profile,holder.username,holder.publisher,post.getPublisher());
+        publisherInfo(holder.image_profile,holder.username,holder.title,post.getTitle(),post.getPublisher());
         isLiked(post.getPostid(),holder.like);
 
         holder.like.setOnClickListener(new View.OnClickListener() {
@@ -93,11 +106,52 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 v.getContext().startActivity(intent);
             }
         });
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.post_image.getDrawable();
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+
+                File imagefolder = new File(v.getContext().getCacheDir(), "images");
+                Uri uri = null;
+                try {
+                    imagefolder.mkdirs();
+                    File file = new File(imagefolder, "shared_image.png");
+                    FileOutputStream outputStream = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+                    uri = FileProvider.getUriForFile(v.getContext(), "com.kesego.nala.fileprovider", file);
+                } catch (Exception e) {
+                    Toast.makeText(v.getContext() ,"" + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+
+                // putting uri of image to be shared
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                // adding text to share
+                intent.putExtra(Intent.EXTRA_TEXT, post.getTitle()+"\n"+post.getDescription());
+
+                // Add subject Here
+                intent.putExtra(Intent.EXTRA_SUBJECT, post.getTitle());
+
+                // setting type to image
+                intent.setType("image/png");
+
+                // calling startactivity() to share
+                v.getContext().startActivity(Intent.createChooser(intent, "Share Via"));
+
+                }
 
 
+        });
 
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -107,7 +161,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public  class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView image_profile,post_image,like,share,delete,edit;
-        public TextView username,likes,description,publisher;
+        public TextView username,likes,description,title;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -120,11 +174,13 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             username = itemView.findViewById(R.id.username);
             likes = itemView.findViewById(R.id.likes);
             description = itemView.findViewById(R.id.description);
-            publisher = itemView.findViewById(R.id.publisher1);
+            title = itemView.findViewById(R.id.title);
             edit = itemView.findViewById(R.id.openp);
 
         }
     }
+
+
     private  void isLiked(String postid,ImageView imageView){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -148,7 +204,7 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    private void  publisherInfo(final ImageView image_profile,final TextView username,final TextView publisher,String userid){
+    private void  publisherInfo(final ImageView image_profile,final TextView username,final TextView ttitle, String title,String userid){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -156,8 +212,8 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
                 Glide.with(mContext).load(user.getImageurl()).into(image_profile);
-                username.setText(user.getUsername());
-                publisher.setText(user.getUsername());
+                ttitle.setText(title);
+
             }
 
             @Override

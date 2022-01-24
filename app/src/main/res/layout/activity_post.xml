@@ -57,11 +57,17 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Title"
+            android:maxLines="50"
+            android:layout_marginTop="15dp"
+            android:id="@+id/title"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Description"
             android:maxLines="100"
             android:layout_marginTop="15dp"
             android:id="@+id/description"/>
-
 
     </LinearLayout>
 

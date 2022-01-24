@@ -5,15 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.kesego.nala.fragments.HomeFragment;
 import com.kesego.nala.fragments.NotificationFragment;
-import com.kesego.nala.fragments.ProfileFragment;
 import com.kesego.nala.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,12 +43,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_heart:
                     selectFragment = new NotificationFragment();
-                    break;
-                case R.id.nav_profile:
-                    SharedPreferences.Editor editor = getSharedPreferences("PREFS",MODE_PRIVATE).edit();
-                    editor.putString("profileid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    editor.apply();
-                    selectFragment = new ProfileFragment();
                     break;
             }
             if (selectFragment != null){
