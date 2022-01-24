@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,8 +49,8 @@ public class PostActivity extends AppCompatActivity {
     private static final int GalleryPick = 1;
     private static final int CAMERA_REQUEST = 1888;
     private static final int STORAGE_REQUEST = 200;
-    private static final int IMAGEPICK_GALLERY_REQUEST = 300;
-    private static final int IMAGE_PICKCAMERA_REQUEST = 400;
+    private static final int REQUEST_CODE_IMAGE = 101;
+
     String cameraPermission[];
     String storagePermission[];
 
@@ -88,90 +89,13 @@ public class PostActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
-        showImagePicDialog();
+        ImagePicker.Companion.with(PostActivity.this)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start(REQUEST_CODE_IMAGE);
 
-    }
-    private void showImagePicDialog() {
-        String options[] = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick Image From");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    if (!checkCameraPermission()) {
-                        requestCameraPermission();
-                    } else {
-                        pickFromGallery();
-                    }
-                } else if (which == 1) {
-                    if (!checkStoragePermission()) {
-                        requestStoragePermission();
-                    } else {
-                        pickFromGallery();
-                    }
-                }
-            }
-        });
-        builder.create().show();
-    }
-    // checking storage permissions
-    private Boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
-    }
 
-    // Requesting  gallery permission
-    private void requestStoragePermission() {
-        requestPermissions(storagePermission, STORAGE_REQUEST);
-    }
-
-    // checking camera permissions
-    private Boolean checkCameraPermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result && result1;
-    }
-
-    // Requesting camera permission
-    private void requestCameraPermission() {
-        requestPermissions(cameraPermission, CAMERA_REQUEST);
-    }
-
-    // Requesting camera and gallery
-    // permission if not given
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case CAMERA_REQUEST: {
-                if (grantResults.length > 0) {
-                    boolean camera_accepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    boolean writeStorageaccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                    if (camera_accepted && writeStorageaccepted) {
-                        pickFromGallery();
-                    } else {
-                        Toast.makeText(this, "Please Enable Camera and Storage Permissions", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-            break;
-            case STORAGE_REQUEST: {
-                if (grantResults.length > 0) {
-                    boolean writeStorageaccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (writeStorageaccepted) {
-                        pickFromGallery();
-                    } else {
-                        Toast.makeText(this, "Please Enable Storage Permissions", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-            break;
-        }
-    }
-
-    // Here we will pick image from gallery or camera
-    private void pickFromGallery() {
-        CropImage.activity().start(PostActivity.this);
     }
 
 
@@ -247,11 +171,10 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-     if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                Picasso.with(this).load(resultUri).into(image_added);
+     if (requestCode == REQUEST_CODE_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                 imageUri = data.getData();
+                Picasso.with(this).load(imageUri).into(image_added);
             }
         }
         else{
