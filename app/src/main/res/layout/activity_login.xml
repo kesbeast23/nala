@@ -10,8 +10,8 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_width="200dp"
         android:background="@drawable/logo"
         />
 

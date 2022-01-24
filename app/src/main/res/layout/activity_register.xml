@@ -10,8 +10,8 @@
     tools:context=".RegisterActivity">
 
     <ImageView
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:background="@drawable/logo"
         />
 
