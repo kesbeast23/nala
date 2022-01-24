@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +35,7 @@ import com.kesego.nala.Model.User;
 import com.kesego.nala.PostActivity;
 import com.kesego.nala.R;
 import com.kesego.nala.RegisterActivity;
+import com.kesego.nala.fragments.HomeFragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -85,7 +88,10 @@ public class PostAdapter extends  RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostid()).child(firebaseUser.getUid()).setValue(true);
                 }else{
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostid()).child(firebaseUser.getUid()).removeValue();
+                    mPost.clear();
+
                 }
+
             }
         });
 
