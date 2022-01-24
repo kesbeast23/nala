@@ -42,7 +42,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"/>
 
                 <ImageView
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:text="Change Image"
             android:id="@+id/tv_change"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_gravity="center"
             android:textSize="20sp"/>
         <com.rengwuxian.materialedittext.MaterialEditText

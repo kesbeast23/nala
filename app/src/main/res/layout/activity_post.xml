@@ -37,7 +37,7 @@
                 android:textSize="16sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimaryDark"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
